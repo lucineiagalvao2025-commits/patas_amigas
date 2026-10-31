@@ -1,4 +1,4 @@
-import os
+﻿import os
 from datetime import datetime, date
 from decimal import Decimal, InvalidOperation
 
@@ -66,7 +66,7 @@ def parse_decimal(value, field_name):
     try:
         return Decimal(value.replace(",", "."))
     except (InvalidOperation, AttributeError):
-        raise ValueError(f"Informe um valor válido para {field_name}.")
+        raise ValueError(f"Informe um valor vÃ¡lido para {field_name}.")
 
 
 @app.route("/")
@@ -91,7 +91,7 @@ def tutores():
         if not nome or not telefone:
             flash("Preencha nome e telefone do tutor.", "error")
         elif cpf and Tutor.query.filter_by(cpf=cpf).first():
-            flash("Já existe um tutor cadastrado com esse CPF.", "error")
+            flash("JÃ¡ existe um tutor cadastrado com esse CPF.", "error")
         else:
             db.session.add(Tutor(nome=nome, telefone=telefone,
                                  endereco=request.form.get("endereco", "").strip(), cpf=cpf))
@@ -112,7 +112,7 @@ def pets():
         especie = request.form.get("especie", "").strip()
         tutor_id = request.form.get("tutor_id", type=int)
         if not nome or not especie or not tutor_id or not db.session.get(Tutor, tutor_id):
-            flash("Preencha os dados do pet e selecione um tutor válido.", "error")
+            flash("Preencha os dados do pet e selecione um tutor vÃ¡lido.", "error")
         else:
             nasc = request.form.get("data_nascimento", "").strip()
             peso_raw = request.form.get("peso", "").strip()
@@ -147,15 +147,15 @@ def veterinarios():
         nome = request.form.get("nome", "").strip()
         crmv = request.form.get("crmv", "").strip()
         if not nome or not crmv:
-            flash("Nome e CRMV são obrigatórios.", "error")
+            flash("Nome e CRMV sÃ£o obrigatÃ³rios.", "error")
         elif Veterinario.query.filter_by(crmv=crmv).first():
-            flash("Já existe um veterinário com esse CRMV.", "error")
+            flash("JÃ¡ existe um veterinÃ¡rio com esse CRMV.", "error")
         else:
             db.session.add(Veterinario(nome=nome, crmv=crmv,
                                        especialidade=request.form.get("especialidade", "").strip(),
                                        telefone=request.form.get("telefone", "").strip()))
             db.session.commit()
-            flash("Veterinário cadastrado com sucesso.", "success")
+            flash("VeterinÃ¡rio cadastrado com sucesso.", "success")
             return redirect(url_for("veterinarios"))
     q = request.args.get("q", "").strip()
     query = Veterinario.query
@@ -173,10 +173,10 @@ def servicos():
         try:
             valor = parse_decimal(valor_raw, "valor")
             if not nome or valor < 0 or duracao < 5 or duracao > 480:
-                raise ValueError("Informe nome, valor não negativo e duração entre 5 e 480 minutos.")
+                raise ValueError("Informe nome, valor nÃ£o negativo e duraÃ§Ã£o entre 5 e 480 minutos.")
             db.session.add(Servico(nome=nome, valor=valor, duracao_minutos=duracao))
             db.session.commit()
-            flash("Serviço cadastrado com sucesso.", "success")
+            flash("ServiÃ§o cadastrado com sucesso.", "success")
             return redirect(url_for("servicos"))
         except ValueError as e:
             flash(str(e), "error")
@@ -191,12 +191,15 @@ def agendamentos():
         servico_id = request.form.get("servico_id", type=int)
         data_raw = request.form.get("data_hora", "").strip()
         try:
+            if not data_raw:
+                raise ValueError("Informe a data e o horário do agendamento.")
+
             when = datetime.fromisoformat(data_raw)
             pet = db.session.get(Pet, pet_id)
             vet = db.session.get(Veterinario, vet_id)
             servico = db.session.get(Servico, servico_id)
             if not all([pet, vet, servico]):
-                raise ValueError("Selecione um pet, veterinário e serviço válidos.")
+                raise ValueError("Selecione um pet, veterinÃ¡rio e serviÃ§o vÃ¡lidos.")
             if when < datetime.now():
                 raise ValueError("A data do agendamento deve ser futura.")
             end_new = when.timestamp() + servico.duracao_minutos * 60
@@ -208,7 +211,7 @@ def agendamentos():
                 start_old = item.data_hora.timestamp()
                 end_old = start_old + item.servico.duracao_minutos * 60
                 if when.timestamp() < end_old and end_new > start_old:
-                    raise ValueError("Este veterinário já possui um agendamento nesse horário.")
+                    raise ValueError("Este veterinÃ¡rio jÃ¡ possui um agendamento nesse horÃ¡rio.")
             ag = Agendamento(pet_id=pet_id, veterinario_id=vet_id, servico_id=servico_id,
                              data_hora=when, observacoes=request.form.get("observacoes", "").strip())
             db.session.add(ag)
@@ -219,10 +222,10 @@ def agendamentos():
             flash(str(e), "error")
         except Exception:
             db.session.rollback()
-            flash("Não foi possível criar o agendamento. Confira os campos e tente novamente.", "error")
+            flash("NÃ£o foi possÃ­vel criar o agendamento. Confira os campos e tente novamente.", "error")
     status = request.args.get("status", "")
     query = Agendamento.query
-    if status in ["Agendado", "Concluído", "Cancelado"]:
+    if status in ["Agendado", "ConcluÃ­do", "Cancelado"]:
         query = query.filter_by(status=status)
     items = query.order_by(Agendamento.data_hora.desc()).all()
     min_date = datetime.now().strftime("%Y-%m-%dT%H:%M")
@@ -235,21 +238,21 @@ def agendamentos():
 def alterar_status(ag_id):
     ag = db.session.get(Agendamento, ag_id)
     if not ag:
-        flash("Agendamento não encontrado.", "error")
+        flash("Agendamento nÃ£o encontrado.", "error")
     else:
         status = request.form.get("status", "")
-        if status in ["Agendado", "Concluído", "Cancelado"]:
+        if status in ["Agendado", "ConcluÃ­do", "Cancelado"]:
             ag.status = status
             db.session.commit()
             flash("Status atualizado.", "success")
         else:
-            flash("Status inválido.", "error")
+            flash("Status invÃ¡lido.", "error")
     return redirect(url_for("agendamentos"))
 
 
 @app.cli.command("init-db")
 def init_db():
-    """Cria as tabelas da aplicação."""
+    """Cria as tabelas da aplicaÃ§Ã£o."""
     with app.app_context():
         db.create_all()
         print("Banco de dados inicializado.")
@@ -261,3 +264,4 @@ with app.app_context():
 
 if __name__ == "__main__":
     app.run(debug=os.environ.get("FLASK_DEBUG", "0") == "1")
+

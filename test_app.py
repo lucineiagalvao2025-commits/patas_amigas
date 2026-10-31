@@ -91,3 +91,19 @@ def test_data_de_nascimento_futura():
 
     with app.app_context():
         assert Pet.query.count() == 0
+
+def test_agendamento_sem_data():
+    with app.test_client() as client:
+        resposta = client.post(
+            "/agendamentos",
+            data={
+                "pet_id": "",
+                "veterinario_id": "",
+                "servico_id": "",
+                "data_hora": ""
+            },
+            follow_redirects=True
+        )
+
+        assert resposta.status_code == 200
+        assert "Informe a data e o horário do agendamento.".encode() in resposta.data
