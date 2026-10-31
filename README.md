@@ -78,3 +78,12 @@ https://github.com/lucineiagalvao2025-commits/patas_amigas
 ## Observação
 
 Este é um MVP acadêmico. Antes de utilizar o sistema em uma clínica real, são necessários testes adicionais, controles de acesso, proteção de dados e outras medidas de segurança.
+
+## Qualidade e revisão técnica
+
+O sistema possui validações para evitar cadastros inconsistentes,
+como peso inválido, data de nascimento futura e agendamentos sem data e horário.
+
+A aplicação também conta com testes automatizados utilizando pytest,
+permitindo verificar o funcionamento das principais funcionalidades
+e identificar problemas durante a evolução do projeto.
