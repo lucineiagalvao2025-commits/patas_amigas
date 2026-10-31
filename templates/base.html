@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Patas Amigas{% endblock %} | Patas Amigas</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-icon">🐾</span><span>Patas <b>Amigas</b><small>Gestão veterinária</small></span></a>
+    <nav aria-label="Menu principal">
+      <a href="{{ url_for('index') }}" class="{% if request.endpoint == 'index' %}active{% endif %}">▦ <span>Painel</span></a>
+      <a href="{{ url_for('agendamentos') }}" class="{% if request.endpoint in ['agendamentos','alterar_status'] %}active{% endif %}">▣ <span>Agendamentos</span></a>
+      <a href="{{ url_for('tutores') }}" class="{% if request.endpoint == 'tutores' %}active{% endif %}">♙ <span>Tutores</span></a>
+      <a href="{{ url_for('pets') }}" class="{% if request.endpoint == 'pets' %}active{% endif %}">🐶 <span>Pets</span></a>
+      <a href="{{ url_for('veterinarios') }}" class="{% if request.endpoint == 'veterinarios' %}active{% endif %}">⚕ <span>Veterinários</span></a>
+      <a href="{{ url_for('servicos') }}" class="{% if request.endpoint == 'servicos' %}active{% endif %}">♡ <span>Serviços</span></a>
+    </nav>
+    <div class="sidebar-note"><span>💚</span><p>Cuidado organizado,<br>pets mais felizes.</p></div>
+    <div class="sidebar-footer">MVP acadêmico · Patas Amigas</div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div class="mobile-brand">🐾 Patas Amigas</div><div><span class="status-dot"></span> Sistema de gestão</div></header>
+    <section class="content">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}<div class="flash-area" aria-live="polite">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+      {% endwith %}
+      {% block content %}{% endblock %}
+      <footer class="page-footer">Patas Amigas <span>·</span> Protótipo acadêmico de gestão veterinária</footer>
+    </section>
+  </main>
+</body>
+</html>

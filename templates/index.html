@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Painel{% endblock %}
+{% block content %}
+<div class="welcome"><div><span class="eyebrow">VISÃO GERAL</span><h1>Olá! Bem-vinda ao Patas Amigas 🐾</h1><p>Organize os atendimentos e acompanhe a rotina da clínica em um só lugar.</p></div><a class="btn primary" href="{{ url_for('agendamentos') }}">＋ Novo agendamento</a></div>
+<div class="stats">
+  <article class="stat-card"><div class="stat-top"><span>Tutores cadastrados</span><span class="stat-icon lilac">♙</span></div><strong>{{ total_tutores }}</strong><a href="{{ url_for('tutores') }}">Ver tutores →</a></article>
+  <article class="stat-card"><div class="stat-top"><span>Pets cadastrados</span><span class="stat-icon mint">🐾</span></div><strong>{{ total_pets }}</strong><a href="{{ url_for('pets') }}">Ver pets →</a></article>
+  <article class="stat-card"><div class="stat-top"><span>Veterinários</span><span class="stat-icon peach">⚕</span></div><strong>{{ total_vets }}</strong><a href="{{ url_for('veterinarios') }}">Ver equipe →</a></article>
+  <article class="stat-card"><div class="stat-top"><span>Agendamentos hoje</span><span class="stat-icon blue">▣</span></div><strong>{{ total_agendamentos }}</strong><a href="{{ url_for('agendamentos') }}">Ver agenda →</a></article>
+</div>
+<div class="quick-grid">
+  <a class="quick-card" href="{{ url_for('tutores') }}"><span class="quick-icon">♙</span><div><b>Cadastrar tutor</b><small>Dados de contato do responsável</small></div><span class="arrow">→</span></a>
+  <a class="quick-card" href="{{ url_for('pets') }}"><span class="quick-icon green">🐶</span><div><b>Cadastrar pet</b><small>Animal e tutor responsável</small></div><span class="arrow">→</span></a>
+  <a class="quick-card" href="{{ url_for('agendamentos') }}"><span class="quick-icon purple">▣</span><div><b>Agendar atendimento</b><small>Escolha pet, serviço e horário</small></div><span class="arrow">→</span></a>
+</div>
+<div class="panel"><div class="panel-heading"><div><h2>Próximos agendamentos</h2><p>Atendimentos futuros registrados no sistema</p></div><a class="text-link" href="{{ url_for('agendamentos') }}">Ver todos →</a></div>
+{% if proximos %}<div class="table-wrap"><table><thead><tr><th>Data e hora</th><th>Pet</th><th>Tutor</th><th>Veterinário</th><th>Serviço</th><th>Status</th></tr></thead><tbody>{% for a in proximos %}<tr><td>{{ a.data_hora.strftime('%d/%m/%Y %H:%M') }}</td><td><b>{{ a.pet.nome }}</b></td><td>{{ a.pet.tutor.nome }}</td><td>{{ a.veterinario.nome }}</td><td>{{ a.servico.nome }}</td><td><span class="badge">{{ a.status }}</span></td></tr>{% endfor %}</tbody></table></div>{% else %}<div class="empty"><span>📅</span><b>Nenhum agendamento futuro</b><p>Quando você cadastrar um atendimento, ele aparecerá aqui.</p><a class="btn primary" href="{{ url_for('agendamentos') }}">Criar agendamento</a></div>{% endif %}
+</div>
+{% endblock %}
