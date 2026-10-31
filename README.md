@@ -1,55 +1,80 @@
-# Patas Amigas — MVP web
+# 🐾 Patas Amigas
 
-Aplicação web inicial para cadastro de tutores, pets, veterinários e serviços, além de criação/consulta de agendamentos com verificação de conflito de horário.
+## Sobre o projeto
+
+O Patas Amigas é um sistema web desenvolvido como projeto acadêmico do curso de Análise e Desenvolvimento de Sistemas (ADS). Seu objetivo é facilitar o gerenciamento de uma clínica veterinária, organizando cadastros e agendamentos em um único ambiente.
 
 ## Funcionalidades
-- Painel inicial com totais e próximos agendamentos.
-- Cadastro e busca de tutores.
-- Cadastro e busca de pets vinculados a tutores.
-- Cadastro e busca de veterinários.
-- Cadastro de serviços com valor e duração.
+
+- Cadastro e consulta de tutores.
+- Cadastro e consulta de animais de estimação.
+- Cadastro e consulta de veterinários.
+- Cadastro e consulta de serviços veterinários.
 - Criação e consulta de agendamentos.
-- Verificação de conflito de horário do veterinário considerando a duração do serviço.
-- Alteração de status para Agendado, Concluído ou Cancelado.
-- Layout responsivo para desktop e celular.
+- Atualização do status dos agendamentos.
+- Interface web adaptável a diferentes tamanhos de tela.
+
+## Tecnologias utilizadas
+
+- Python
+- Flask
+- Flask-SQLAlchemy
+- SQLite
+- HTML
+- CSS
+- Git e GitHub
 
 ## Requisitos
-Python 3.10 ou superior (recomendado Python 3.12).
 
-## Executar localmente no Windows
-1. Extraia o ZIP.
-2. Abra a pasta `patas_amigas_mvp` no Explorador de Arquivos.
-3. Na barra de endereço da pasta, digite `cmd` e pressione Enter.
-4. Execute:
-   ```bat
-   py -m venv .venv
-   .venv\Scripts\activate
+- Python instalado.
+- Git instalado.
+- Navegador web atualizado.
+
+## Como executar o projeto
+
+1. Abra o terminal na pasta do projeto.
+2. Crie um ambiente virtual:
+
+   ```powershell
+   python -m venv .venv
+   ```
+
+3. Ative o ambiente virtual:
+
+   ```powershell
+   .\.venv\Scripts\Activate.ps1
+   ```
+
+4. Instale as dependências:
+
+   ```powershell
    pip install -r requirements.txt
+   ```
+
+5. Inicie a aplicação:
+
+   ```powershell
    python app.py
    ```
-5. Abra `http://127.0.0.1:5000` no navegador.
 
-Por padrão, o aplicativo usa SQLite e cria `patas_amigas.db` automaticamente, então pode ser testado sem configurar o MySQL primeiro.
+6. Abra o navegador no endereço:
 
-## Usar MySQL
-1. No MySQL Workbench, crie o banco `patas_amigas` (se ainda não existir):
-   ```sql
-   CREATE DATABASE patas_amigas CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-   ```
-2. Crie e ative o ambiente virtual e instale os requisitos como acima.
-3. Configure a variável `DATABASE_URL` antes de iniciar o app. Exemplo no Prompt de Comando:
-   ```bat
-   set DATABASE_URL=mysql+pymysql://usuario:senha@localhost/patas_amigas?charset=utf8mb4
-   python app.py
-   ```
-   Substitua `usuario` e `senha` pelos dados locais do seu MySQL. Não publique senhas no GitHub.
-4. O aplicativo cria suas próprias tabelas ao iniciar. Ele não importa automaticamente dados das tabelas SQL antigas do projeto; será necessário adaptar/importar os dados se quiser reaproveitá-los.
+   http://127.0.0.1:5000
 
-## Publicar no GitHub
-Envie os arquivos do projeto para o repositório `projeto-patas-amigas`. Não envie `.env`, senhas, tokens nem o arquivo de banco local `.db`.
+## Banco de dados
 
-## Limitações importantes
-- Esta é uma primeira versão acadêmica para desenvolvimento e demonstração, não um sistema pronto para uso real em clínica.
-- Ainda não há login/autenticação, permissões por usuário, recuperação de senha, auditoria ou proteção completa para produção.
-- Teste os fluxos e valide os dados antes de apresentar como funcionalidade concluída.
-- O app tem um modelo de dados próprio. As tabelas antigas podem ter nomes/campos diferentes; confira antes de migrar dados.
+Na configuração padrão, a aplicação utiliza SQLite para armazenar os dados localmente. O banco é utilizado pela aplicação conforme sua configuração.
+
+## Objetivo acadêmico
+
+Este projeto tem como finalidade aplicar conhecimentos de programação, banco de dados, desenvolvimento web, versionamento de código e organização de software.
+
+## Repositório
+
+Código-fonte disponível no GitHub:
+
+https://github.com/lucineiagalvao2025-commits/patas_amigas
+
+## Observação
+
+Este é um MVP acadêmico. Antes de utilizar o sistema em uma clínica real, são necessários testes adicionais, controles de acesso, proteção de dados e outras medidas de segurança.
