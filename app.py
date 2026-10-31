@@ -119,6 +119,13 @@ def pets():
             try:
                 data_nasc = date.fromisoformat(nasc) if nasc else None
                 peso = parse_decimal(peso_raw, "peso") if peso_raw else None
+
+                if data_nasc and data_nasc > date.today():
+                    raise ValueError("A data de nascimento n?o pode ser futura.")
+
+                if peso is not None and peso <= 0:
+                    raise ValueError("O peso do pet deve ser maior que zero.")
+
                 db.session.add(Pet(nome=nome, especie=especie, raca=request.form.get("raca", "").strip(),
                                    data_nascimento=data_nasc, peso=peso, tutor_id=tutor_id))
                 db.session.commit()
