@@ -111,7 +111,7 @@ def pets():
         nome = request.form.get("nome", "").strip()
         especie = request.form.get("especie", "").strip()
         tutor_id = request.form.get("tutor_id", type=int)
-        if not nome or not especie or not tutor_id or not Tutor.query.get(tutor_id):
+        if not nome or not especie or not tutor_id or not db.session.get(Tutor, tutor_id):
             flash("Preencha os dados do pet e selecione um tutor válido.", "error")
         else:
             nasc = request.form.get("data_nascimento", "").strip()
